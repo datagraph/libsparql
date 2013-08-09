@@ -23,9 +23,11 @@ Build Prerequisites
 Build Dependencies
 ------------------
 
+* XQilla_ (>= 2.3)
 * Boost.Utility_ (>= 1.48)
 * Boost.Test_ (>= 1.48) for ``make check`` unit tests only
 
+.. _XQilla:        http://xqilla.sourceforge.net/
 .. _Boost.Utility: http://www.boost.org/libs/utility/
 .. _Boost.Test:    http://www.boost.org/libs/test/
 

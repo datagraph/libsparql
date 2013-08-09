@@ -69,6 +69,11 @@ AS_IF([test "x$enable_unicode" == "xno"],
 dnl Check for libraries:
 # libboost (libboost-dev on Ubuntu, boost on Mac OS X + MacPorts)
 AX_BOOST_BASE([1.48], [AX_BOOST_UNIT_TEST_FRAMEWORK])
+# libxqilla (libxqilla-dev on Ubuntu, xqilla on Mac OS X + MacPorts)
+AC_CHECK_HEADERS([xqilla/xqilla-simple.hpp],
+  AC_SEARCH_LIBS([createXQillaXQCImplementation], [xqilla], [],
+    AC_MSG_ERROR([*** Shared library libxqilla not found; install http://xqilla.sourceforge.net/ ***])),
+  AC_MSG_ERROR([*** Header file <xqilla/xqilla-simple.hpp> not found; install http://xqilla.sourceforge.net/ ***]))
 
 dnl Check for header files:
 
