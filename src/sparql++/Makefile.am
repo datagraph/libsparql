@@ -6,7 +6,8 @@ libsparql___la_SOURCES =     \
   format.cc               \
   module.cc               \
   version.cc              \
-  writer.cc
+  writer.cc               \
+  writer/impl.cc
 
 base_pkgincludedir = $(includedir)/sparql++
 
