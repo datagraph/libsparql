@@ -7,5 +7,7 @@
 
 BOOST_AUTO_TEST_CASE(test_ctor) {
   sparql::writer writer(stdout, "application/sparql-results+xml", "UTF-8");
+  writer.begin();
+  writer.finish();
   BOOST_CHECK(true); // TODO
 }
