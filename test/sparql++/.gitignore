@@ -12,3 +12,13 @@ check_format
 check_module
 check_version
 check_writer
+check_writer_json
+check_writer_xml
+check_writer_bool
+check_writer_brtr
+check_writer_csv
+check_writer_json
+check_writer_sse
+check_writer_tsv
+check_writer_xml
+check_writer_xslt

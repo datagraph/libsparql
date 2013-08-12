@@ -5,23 +5,8 @@
 
 #include "sparql++/writer.h"
 
-class sparql::writer::implementation : private boost::noncopyable {
+struct sparql::writer::implementation : private boost::noncopyable {
 public:
-  static writer::implementation* create(
-    const std::string& file_path,
-    const std::string& content_type,
-    const std::string& charset);
-
-  static writer::implementation* create(
-    std::ostream& stream,
-    const std::string& content_type,
-    const std::string& charset);
-
-  static writer::implementation* create(
-    FILE* stream,
-    const std::string& content_type,
-    const std::string& charset);
-
   virtual ~implementation() {}
 
   virtual void begin() = 0;

@@ -66,6 +66,23 @@ AC_ARG_ENABLE([unicode],
   [AS_HELP_STRING([--disable-unicode], [omit support for Unicode strings])])
 AS_IF([test "x$enable_unicode" == "xno"],
   [AC_DEFINE([DISABLE_UNICODE], 1, [Define to disable Unicode string support.])])
+# --enable-*/--disable-*
+AC_DEFUN([AX_ARG_ENABLE_FORMAT], [dnl
+  m4_define([SPARQL_FORMAT_ID], m4_translit([$1], [-a-z], [_A-Z]))
+  AC_ARG_ENABLE([$1],
+    [AS_HELP_STRING([--disable-$1], [omit support for the $2 serialization format])])
+  AS_IF([test "x$enable_$1" == "xno"], [
+    AC_DEFINE([DISABLE_]SPARQL_FORMAT_ID, 1, [Define to omit the $2 module.])])
+  AM_CONDITIONAL([DISABLE_]SPARQL_FORMAT_ID, [test "x$enable_$1" == "xno"])
+])
+AX_ARG_ENABLE_FORMAT([bool], [boolean]) # --enable-bool/--disable-bool
+AX_ARG_ENABLE_FORMAT([brtr], [BRTR])    # --enable-brtr/--disable-brtr
+AX_ARG_ENABLE_FORMAT([csv], [CSV])      # --enable-csv/--disable-csv
+AX_ARG_ENABLE_FORMAT([json], [JSON])    # --enable-json/--disable-json
+AX_ARG_ENABLE_FORMAT([sse], [SSE])      # --enable-sse/--disable-sse
+AX_ARG_ENABLE_FORMAT([tsv], [TSV])      # --enable-tsv/--disable-tsv
+AX_ARG_ENABLE_FORMAT([xml], [XML])      # --enable-xml/--disable-xml
+AX_ARG_ENABLE_FORMAT([xslt], [XSLT])    # --enable-xslt/--disable-xslt
 
 dnl Check for libraries:
 # libboost (libboost-dev on Ubuntu, boost on Mac OS X + MacPorts)

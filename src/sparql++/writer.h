@@ -36,10 +36,10 @@ namespace sparql {
 
     void flush();
 
-    class implementation;
+    struct implementation;
 
   private:
-    std::unique_ptr<implementation> _implementation;
+    std::unique_ptr<implementation> _implementation = {nullptr};
   };
 }
 
