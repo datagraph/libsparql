@@ -147,6 +147,12 @@ writer::finish() {
 }
 
 void
+writer::write_head() {
+  begin_head();
+  finish_head();
+}
+
+void
 writer::begin_head() {
   assert(_implementation != nullptr);
   _implementation->begin_head();

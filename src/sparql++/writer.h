@@ -75,6 +75,10 @@ namespace sparql {
 
     /**
      */
+    void write_head();
+
+    /**
+     */
     void begin_head();
 
     /**

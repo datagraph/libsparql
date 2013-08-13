@@ -4,8 +4,7 @@ static void
 write_boolean(sparql::writer& writer) {
   writer.begin();
   {
-    writer.begin_head();
-    writer.finish_head();
+    writer.write_head();
     writer.write_boolean(true);
   }
   writer.finish();
