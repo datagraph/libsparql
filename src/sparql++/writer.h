@@ -95,7 +95,19 @@ namespace sparql {
 
     /**
      */
+    void write_variable(const std::string& name) {
+      write_variable(name.c_str());
+    }
+
+    /**
+     */
     void write_variable(const char* name);
+
+    /**
+     */
+    void write_link(const std::string& href) {
+      write_link(href.c_str());
+    }
 
     /**
      */
@@ -120,6 +132,12 @@ namespace sparql {
     /**
      */
     void finish_result();
+
+    /**
+     */
+    void write_binding(const std::string& name, ...) { // FIXME
+      write_binding(name.c_str()); // TODO
+    }
 
     /**
      */
