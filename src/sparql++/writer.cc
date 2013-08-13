@@ -165,6 +165,15 @@ writer::finish_head() {
 }
 
 void
+writer::write_variables(const std::vector<std::string>& names) {
+  begin_variables();
+  for (const auto& name : names) {
+    write_variable(name);
+  }
+  finish_variables();
+}
+
+void
 writer::begin_variables() {
   assert(_implementation != nullptr);
   _implementation->begin_variables();

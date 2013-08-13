@@ -7,6 +7,7 @@
 #include <memory>  /* for std::unique_ptr */
 #include <ostream> /* for std::ostream */
 #include <string>  /* for std::string */
+#include <vector>  /* for std::vector */
 
 namespace sparql {
   class writer {
@@ -84,6 +85,10 @@ namespace sparql {
     /**
      */
     void finish_head();
+
+    /**
+     */
+    void write_variables(const std::vector<std::string>& names);
 
     /**
      */
