@@ -15,7 +15,7 @@ namespace {
   struct implementation : public sparql::writer::implementation {
   public:
     implementation(FILE* stream);
-    virtual ~implementation() override;
+    virtual ~implementation() noexcept override;
     virtual void begin() override;
     virtual void finish() override;
     virtual void begin_head() override;
@@ -119,7 +119,7 @@ implementation::implementation(FILE* const stream) {
   }
 }
 
-implementation::~implementation() {
+implementation::~implementation() noexcept {
   if (_writer != nullptr) {
     xmlFreeTextWriter(_writer);
     _writer = nullptr;

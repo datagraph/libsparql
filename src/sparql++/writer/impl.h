@@ -9,10 +9,10 @@
 
 struct sparql::writer::implementation : private boost::noncopyable {
 protected:
-  implementation() {}
+  implementation() noexcept {}
 
 public:
-  virtual ~implementation() {}
+  virtual ~implementation() noexcept {}
 
   virtual void begin() = 0;
 

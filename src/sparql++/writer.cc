@@ -126,7 +126,7 @@ writer::writer(writer&& other) noexcept {
   std::swap(_implementation, other._implementation);
 }
 
-writer::~writer() = default;
+writer::~writer() noexcept = default;
 
 writer&
 writer::operator=(writer&& other) noexcept {

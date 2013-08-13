@@ -53,7 +53,7 @@ namespace sparql {
     /**
      * Destructor.
      */
-    ~writer();
+    ~writer() noexcept;
 
     /**
      * Copy assignment operator.
