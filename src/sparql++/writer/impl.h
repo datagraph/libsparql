@@ -6,6 +6,9 @@
 #include "sparql++/writer.h"
 
 struct sparql::writer::implementation : private boost::noncopyable {
+protected:
+  implementation() {}
+
 public:
   virtual ~implementation() {}
 
@@ -13,10 +16,29 @@ public:
 
   virtual void finish() = 0;
 
-  virtual void flush() = 0;
+  virtual void begin_head() = 0;
 
-protected:
-  implementation() {}
+  virtual void finish_head() = 0;
+
+  virtual void begin_variables() = 0;
+
+  virtual void finish_variables() = 0;
+
+  virtual void write_variable(const char* name) = 0;
+
+  virtual void write_boolean(bool value) = 0;
+
+  virtual void begin_results() = 0;
+
+  virtual void finish_results() = 0;
+
+  virtual void begin_result() = 0;
+
+  virtual void finish_result() = 0;
+
+  virtual void write_binding(const char* name, ...) = 0; // TODO
+
+  virtual void flush() = 0;
 };
 
 #endif /* SPARQLXX_WRITER_IMPL_H */

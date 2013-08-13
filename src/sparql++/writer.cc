@@ -137,6 +137,72 @@ writer::finish() {
 }
 
 void
+writer::begin_head() {
+  assert(_implementation != nullptr);
+  _implementation->begin_head();
+}
+
+void
+writer::finish_head() {
+  assert(_implementation != nullptr);
+  _implementation->finish_head();
+}
+
+void
+writer::begin_variables() {
+  assert(_implementation != nullptr);
+  _implementation->begin_variables();
+}
+
+void
+writer::finish_variables() {
+  assert(_implementation != nullptr);
+  _implementation->finish_variables();
+}
+
+void
+writer::write_variable(const char* const name) {
+  assert(_implementation != nullptr);
+  _implementation->write_variable(name);
+}
+
+void
+writer::write_boolean(const bool value) {
+  assert(_implementation != nullptr);
+  _implementation->write_boolean(value);
+}
+
+void
+writer::begin_results() {
+  assert(_implementation != nullptr);
+  _implementation->begin_results();
+}
+
+void
+writer::finish_results() {
+  assert(_implementation != nullptr);
+  _implementation->finish_results();
+}
+
+void
+writer::begin_result() {
+  assert(_implementation != nullptr);
+  _implementation->begin_result();
+}
+
+void
+writer::finish_result() {
+  assert(_implementation != nullptr);
+  _implementation->finish_result();
+}
+
+void
+writer::write_binding(const char* const name, ...) { // FIXME
+  assert(_implementation != nullptr);
+  _implementation->write_binding(name);
+}
+
+void
 writer::flush() {
   assert(_implementation != nullptr);
   _implementation->flush();
