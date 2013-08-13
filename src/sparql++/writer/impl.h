@@ -5,6 +5,8 @@
 
 #include "sparql++/writer.h"
 
+#include <boost/noncopyable.hpp>
+
 struct sparql::writer::implementation : private boost::noncopyable {
 protected:
   implementation() {}

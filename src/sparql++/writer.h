@@ -8,11 +8,14 @@
 #include <ostream> /* for std::ostream */
 #include <string>  /* for std::string */
 
-#include <boost/noncopyable.hpp>
-
 namespace sparql {
-  class writer : private boost::noncopyable {
+  class writer {
   public:
+    /**
+     * Default constructor.
+     */
+    writer() = delete;
+
     /**
      * Constructor.
      */
@@ -38,9 +41,29 @@ namespace sparql {
       const std::string& charset);
 
     /**
+     * Copy constructor.
+     */
+    writer(const writer& other) = delete;
+
+    /**
+     * Move constructor.
+     */
+    writer(writer&& other) noexcept;
+
+    /**
      * Destructor.
      */
     ~writer();
+
+    /**
+     * Copy assignment operator.
+     */
+    writer& operator=(const writer& other) = delete;
+
+    /**
+     * Move assignment operator.
+     */
+    writer& operator=(writer&& other) noexcept;
 
     /**
      */
