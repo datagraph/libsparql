@@ -66,11 +66,15 @@ namespace {
         reinterpret_cast<const xmlChar*>(ns));
     }
 
-    inline void finish_element() {
-      /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterEndElement */
-      //xmlTextWriterEndElement(_writer);
-      /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterFullEndElement */
-      xmlTextWriterFullEndElement(_writer);
+    inline void finish_element(const bool full = false) {
+      if (full) {
+        /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterFullEndElement */
+        xmlTextWriterFullEndElement(_writer);
+      }
+      else {
+        /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterEndElement */
+        xmlTextWriterEndElement(_writer);
+      }
     }
 
     inline void write_attribute(const char* name, const char* value) {
@@ -135,62 +139,67 @@ implementation::begin() {
 
 void
 implementation::finish() {
-  finish_element(); /* </sparql> */
+  finish_element(true); /* </sparql> */
 
   finish_document(); /* EOF */
 }
 
 void
 implementation::begin_head() {
-  // TODO
+  begin_element("head");
 }
 
 void
 implementation::finish_head() {
-  // TODO
+  finish_element(); /* </head> */
 }
 
 void
 implementation::begin_variables() {
-  // TODO
+  /* nothing to do */
 }
 
 void
 implementation::finish_variables() {
-  // TODO
+  /* nothing to do */
 }
 
 void
 implementation::write_variable(const char* const name) {
-  (void)name; // TODO
+  begin_element("variable");
+  write_attribute("name", name);
+  finish_element();
 }
 
 void
 implementation::write_boolean(const bool value) {
-  (void)value; // TODO
+  write_element("boolean", value ? "true" : "false");
 }
 
 void
 implementation::begin_results() {
-  // TODO
+  begin_element("results");
 }
 
 void
 implementation::finish_results() {
-  // TODO
+  finish_element(true); /* </results> */
 }
 
 void
 implementation::begin_result() {
-  // TODO
+  begin_element("result");
 }
 
 void
 implementation::finish_result() {
-  // TODO
+  finish_element(true); /* </result> */
 }
 
 void
-implementation::write_binding(const char* const name, ...) {
-  (void)name; // TODO
+implementation::write_binding(const char* const name, ...) { // TODO
+  begin_element("binding");
+  write_attribute("name", name);
+  // TODO: write binding value
+  finish_element(true);
 }
