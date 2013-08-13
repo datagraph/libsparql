@@ -183,6 +183,12 @@ writer::write_variable(const char* const name) {
 }
 
 void
+writer::write_link(const char* const href) {
+  assert(_implementation != nullptr);
+  _implementation->write_link(href);
+}
+
+void
 writer::write_boolean(const bool value) {
   assert(_implementation != nullptr);
   _implementation->write_boolean(value);

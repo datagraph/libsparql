@@ -99,6 +99,10 @@ namespace sparql {
 
     /**
      */
+    void write_link(const char* href);
+
+    /**
+     */
     void write_boolean(bool value);
 
     /**

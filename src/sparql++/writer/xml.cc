@@ -23,6 +23,7 @@ namespace {
     virtual void begin_variables() override;
     virtual void finish_variables() override;
     virtual void write_variable(const char* name) override;
+    virtual void write_link(const char* href) override;
     virtual void write_boolean(bool value) override;
     virtual void begin_results() override;
     virtual void finish_results() override;
@@ -168,6 +169,13 @@ void
 implementation::write_variable(const char* const name) {
   begin_element("variable");
   write_attribute("name", name);
+  finish_element();
+}
+
+void
+implementation::write_link(const char* const href) {
+  begin_element("link");
+  write_attribute("href", href);
   finish_element();
 }
 

@@ -28,6 +28,8 @@ public:
 
   virtual void write_variable(const char* name) = 0;
 
+  virtual void write_link(const char* href) = 0;
+
   virtual void write_boolean(bool value) = 0;
 
   virtual void begin_results() = 0;
