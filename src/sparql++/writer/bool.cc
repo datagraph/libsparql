@@ -13,19 +13,7 @@ namespace {
   public:
     implementation(FILE* stream);
     virtual ~implementation() noexcept override;
-    virtual void begin() override {}
-    virtual void finish() override {}
-    virtual void begin_head() override {}
-    virtual void finish_head() override {}
-    virtual void begin_variables() override {}
-    virtual void finish_variables() override {}
-    virtual void write_variable(const char* name) override {}
     virtual void write_boolean(bool value) override;
-    virtual void begin_results() override {}
-    virtual void finish_results() override {}
-    virtual void begin_result() override {}
-    virtual void finish_result() override {}
-    virtual void write_binding(const char* name, ...) override {} // TODO
     virtual void flush() override;
   private:
     FILE* _stream = nullptr;

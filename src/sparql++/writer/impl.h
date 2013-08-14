@@ -14,35 +14,35 @@ protected:
 public:
   virtual ~implementation() noexcept {}
 
-  virtual void begin() = 0;
+  virtual void begin() {}
 
-  virtual void finish() = 0;
+  virtual void finish() {}
 
-  virtual void begin_head() = 0;
+  virtual void begin_head() {}
 
-  virtual void finish_head() = 0;
+  virtual void finish_head() {}
 
-  virtual void begin_variables() = 0;
+  virtual void begin_variables() {}
 
-  virtual void finish_variables() = 0;
+  virtual void finish_variables() {}
 
-  virtual void write_variable(const char* name) = 0;
+  virtual void write_variable(const char* name) { (void)name; }
 
   virtual void write_link(const char* href) { (void)href; }
 
-  virtual void write_boolean(bool value) = 0;
+  virtual void write_boolean(bool value) { (void)value; }
 
-  virtual void begin_results() = 0;
+  virtual void begin_results() {}
 
-  virtual void finish_results() = 0;
+  virtual void finish_results() {}
 
-  virtual void begin_result() = 0;
+  virtual void begin_result() {}
 
-  virtual void finish_result() = 0;
+  virtual void finish_result() {}
 
-  virtual void write_binding(const char* name, ...) = 0; // TODO
+  virtual void write_binding(const char* name, ...) { (void)name; } // TODO
 
-  virtual void flush() = 0;
+  virtual void flush() {}
 };
 
 #endif /* SPARQLXX_WRITER_IMPL_H */
