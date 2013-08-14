@@ -1,0 +1,1 @@
+- Add a sparql::writer#write_links(...) method.
