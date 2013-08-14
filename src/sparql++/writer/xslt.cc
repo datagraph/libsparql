@@ -6,7 +6,8 @@
 
 #include "sparql++/writer/xslt.h"
 
-#include <cassert> /* for assert() */
+#include <cassert>   /* for assert() */
+#include <stdexcept> /* for std::runtime_error */
 
 namespace {
   struct implementation : public sparql::writer::implementation {
@@ -26,8 +27,13 @@ namespace {
     virtual void finish_results() override;
     virtual void begin_result() override;
     virtual void finish_result() override;
-    virtual void write_binding(const char* name, ...) override; // TODO
-    virtual void flush() override;
+    virtual void begin_binding(const char* name) override;
+    virtual void finish_binding() override;
+    virtual void write_uri_reference(const char* string) override;
+    virtual void write_blank_node(const char* string) override;
+    virtual void write_plain_literal(const char* string, const char* language) override;
+    virtual void write_typed_literal(const char* string, const char* datatype) override;
+    virtual void flush() override {}
   };
 }
 
@@ -36,7 +42,7 @@ sparql_writer_for_xslt(FILE* const stream,
                        const char* const content_type,
                        const char* const charset) {
   (void)content_type, (void)charset;
-  return new implementation(stream); // TODO
+  return new implementation(stream);
 }
 
 implementation::implementation(FILE* const stream) {
@@ -70,12 +76,12 @@ implementation::finish_head() {
 
 void
 implementation::begin_variables() {
-  // TODO
+  /* nothing to do */
 }
 
 void
 implementation::finish_variables() {
-  // TODO
+  /* nothing to do */
 }
 
 void
@@ -114,11 +120,33 @@ implementation::finish_result() {
 }
 
 void
-implementation::write_binding(const char* const name, ...) {
+implementation::begin_binding(const char* const name) {
   (void)name; // TODO
 }
 
 void
-implementation::flush() {
+implementation::finish_binding() {
   // TODO
+}
+
+void
+implementation::write_uri_reference(const char* const string) {
+  (void)string; // TODO
+}
+
+void
+implementation::write_blank_node(const char* const string) {
+  (void)string; // TODO
+}
+
+void
+implementation::write_plain_literal(const char* const string,
+                                    const char* const language) {
+  (void)string, (void)language; // TODO
+}
+
+void
+implementation::write_typed_literal(const char* const string,
+                                    const char* const datatype) {
+  (void)string, (void)datatype; // TODO
 }

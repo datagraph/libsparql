@@ -29,7 +29,12 @@ namespace {
     virtual void finish_results() override;
     virtual void begin_result() override;
     virtual void finish_result() override;
-    virtual void write_binding(const char* name, ...) override; // TODO
+    virtual void begin_binding(const char* name) override;
+    virtual void finish_binding() override;
+    virtual void write_uri_reference(const char* string) override;
+    virtual void write_blank_node(const char* string) override;
+    virtual void write_plain_literal(const char* string, const char* language) override;
+    virtual void write_typed_literal(const char* string, const char* datatype) override;
 
     virtual void flush() override {
       /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterFlush */
@@ -205,9 +210,34 @@ implementation::finish_result() {
 }
 
 void
-implementation::write_binding(const char* const name, ...) { // TODO
+implementation::begin_binding(const char* const name) {
   begin_element("binding");
   write_attribute("name", name);
-  // TODO: write binding value
+}
+
+void
+implementation::finish_binding() {
   finish_element(true);
+}
+
+void
+implementation::write_uri_reference(const char* const string) {
+  (void)string; // TODO
+}
+
+void
+implementation::write_blank_node(const char* const string) {
+  (void)string; // TODO
+}
+
+void
+implementation::write_plain_literal(const char* const string,
+                                    const char* const language) {
+  (void)string, (void)language; // TODO
+}
+
+void
+implementation::write_typed_literal(const char* const string,
+                                    const char* const datatype) {
+  (void)string, (void)datatype; // TODO
 }

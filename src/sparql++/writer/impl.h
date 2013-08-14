@@ -40,7 +40,21 @@ public:
 
   virtual void finish_result() {}
 
-  virtual void write_binding(const char* name, ...) { (void)name; } // TODO
+  virtual void begin_binding(const char* name) { (void)name; }
+
+  virtual void finish_binding() {}
+
+  virtual void write_uri_reference(const char* string) { (void)string; }
+
+  virtual void write_blank_node(const char* string) { (void)string; }
+
+  virtual void write_plain_literal(const char* string, const char* language) {
+    (void)string, (void)language;
+  }
+
+  virtual void write_typed_literal(const char* string, const char* datatype) {
+    (void)string, (void)datatype;
+  }
 
   virtual void flush() {}
 };

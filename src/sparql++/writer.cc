@@ -230,7 +230,7 @@ writer::finish_result() {
 void
 writer::write_binding(const char* const name, ...) { // FIXME
   assert(_implementation != nullptr);
-  _implementation->write_binding(name);
+  (void)name; // TODO
 }
 
 void
