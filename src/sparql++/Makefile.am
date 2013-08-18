@@ -1,6 +1,6 @@
 lib_LTLIBRARIES = libsparql++.la
 
-libsparql___la_LIBADD =
+libsparql___la_LIBADD = $(top_srcdir)/lib/librfcjson.la
 
 libsparql___la_SOURCES =  \
   extern.cc               \
