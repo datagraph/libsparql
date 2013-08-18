@@ -56,6 +56,8 @@ public:
     (void)string, (void)datatype;
   }
 
+  virtual void write_comment(const char* comment) { (void)comment; }
+
   virtual void flush() {}
 };
 

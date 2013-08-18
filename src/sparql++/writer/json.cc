@@ -9,11 +9,12 @@
 #include <cassert> /* for assert() */
 #include <cstring> /* for std::strlen() */
 
-#include <yajl/yajl_gen.h>
+#include "rfc/json/json_writer.h"
+
+using namespace rfc4627;
 
 namespace {
   struct implementation : public sparql::writer::implementation {
-  public:
     implementation(FILE* stream);
     virtual ~implementation() noexcept override;
     virtual void begin() override;
@@ -36,64 +37,8 @@ namespace {
     virtual void write_plain_literal(const char* string, const char* language) override;
     virtual void write_typed_literal(const char* string, const char* datatype) override;
     virtual void flush() override;
-
-    void write(const char* data, std::size_t size) {
-      fwrite(data, 1, size, _stream); // TODO: error handling
-    }
-
-  protected:
-    void begin_map() {
-      const int rc = yajl_gen_map_open(_state);
-      if (rc != yajl_gen_status_ok) {
-        // TODO: error handling
-      }
-    }
-
-    void finish_map() {
-      const int rc = yajl_gen_map_close(_state);
-      if (rc != yajl_gen_status_ok) {
-        // TODO: error handling
-      }
-    }
-
-    void begin_array() {
-      const int rc = yajl_gen_array_open(_state);
-      if (rc != yajl_gen_status_ok) {
-        // TODO: error handling
-      }
-    }
-
-    void finish_array() {
-      const int rc = yajl_gen_array_close(_state);
-      if (rc != yajl_gen_status_ok) {
-        // TODO: error handling
-      }
-    }
-
-    void write_pair(const char* key, const char* value) {
-      assert(key != nullptr);
-      write_string(key);
-      write_string(value);
-    }
-
-    void write_string(const char* string) {
-      const int rc = (string == nullptr) ? yajl_gen_null(_state) :
-        yajl_gen_string(_state, reinterpret_cast<const unsigned char*>(string), std::strlen(string));
-      if (rc != yajl_gen_status_ok) {
-        // TODO: error handling
-      }
-    }
-
-    void write_bool(const bool value) {
-      const int rc = yajl_gen_bool(_state, value);
-      if (rc != yajl_gen_status_ok) {
-        // TODO: error handling
-      }
-    }
-
   private:
-    FILE* _stream = nullptr;
-    yajl_gen _state = nullptr;
+    json_writer _json;
   };
 }
 
@@ -105,170 +50,138 @@ sparql_writer_for_json(FILE* const stream,
   return new implementation(stream);
 }
 
-static void
-_yajl_write_callback(void* const ctx, const char* const str, const std::size_t len) {
-  assert(ctx != nullptr);
-  assert(str != nullptr);
-
-  implementation* const writer = reinterpret_cast<implementation*>(ctx);
-  assert(writer != nullptr);
-
-  writer->write(str, len);
-}
-
 implementation::implementation(FILE* const stream)
-  : _stream(stream) {
+  : _json(stream) {
   assert(stream != nullptr);
-
-  _state = yajl_gen_alloc(nullptr);
-  assert(_state != nullptr);
-
-  {
-    const int rc = yajl_gen_config(_state, yajl_gen_print_callback, _yajl_write_callback, this);
-    (void)rc;
-  }
-  {
-    const int rc = yajl_gen_config(_state, yajl_gen_beautify, true);
-    (void)rc;
-  }
-  {
-    const int rc = yajl_gen_config(_state, yajl_gen_indent_string, "  "); /* two spaces */
-    (void)rc;
-  }
 }
 
-implementation::~implementation() noexcept {
-  if (_state != nullptr) {
-    yajl_gen_free(_state);
-    _state = nullptr;
-  }
-}
+implementation::~implementation() noexcept {}
 
 void
 implementation::begin() {
-  begin_map();
+  _json.begin_object();
 }
 
 void
 implementation::finish() {
-  finish_map();
+  _json.finish_object();
 }
 
 void
 implementation::begin_head() {
-  write_string("head");
-  begin_map();
+  _json.write_string("head");
+  _json.begin_object();
 }
 
 void
 implementation::finish_head() {
-  finish_map();
+  _json.finish_object();
 }
 
 void
 implementation::begin_variables() {
-  write_string("vars");
-  begin_array();
+  _json.write_string("vars");
+  _json.begin_array();
 }
 
 void
 implementation::finish_variables() {
-  finish_array();
+  _json.finish_array();
 }
 
 void
 implementation::write_variable(const char* const name) {
-  write_string(name);
+  _json.write_string(name);
 }
 
 void
 implementation::write_link(const char* const href) {
-  write_string("link");
-  begin_array();
-  write_string(href);
-  finish_array();
+  _json.write_string("link");
+  _json.begin_array();
+  _json.write_string(href);
+  _json.finish_array();
 }
 
 void
 implementation::write_boolean(const bool value) {
-  write_string("boolean");
-  write_bool(value);
+  _json.write_string("boolean");
+  _json.write_boolean(value);
 }
 
 void
 implementation::begin_results() {
-  write_string("results");
-  begin_map();
-  write_string("bindings");
-  begin_array();
+  _json.write_string("results");
+  _json.begin_object();
+  _json.write_string("bindings");
+  _json.begin_array();
 }
 
 void
 implementation::finish_results() {
-  finish_array();
-  finish_map();
+  _json.finish_array();
+  _json.finish_object();
 }
 
 void
 implementation::begin_result() {
-  begin_map();
+  _json.begin_object();
 }
 
 void
 implementation::finish_result() {
-  finish_map();
+  _json.finish_object();
 }
 
 void
 implementation::begin_binding(const char* const name) {
-  write_string(name);
-  begin_map();
+  _json.write_string(name);
+  _json.begin_object();
 }
 
 void
 implementation::finish_binding() {
-  finish_map();
+  _json.finish_object();
 }
 
 void
 implementation::write_uri_reference(const char* const string) {
-  begin_map();
-  write_pair("type", "uri");
-  write_pair("value", string);
-  finish_map();
+  _json.begin_object();
+  _json.write_strings("type", "uri");
+  _json.write_strings("value", string);
+  _json.finish_object();
 }
 
 void
 implementation::write_blank_node(const char* const string) {
-  begin_map();
-  write_pair("type", "bnode");
-  write_pair("value", string);
-  finish_map();
+  _json.begin_object();
+  _json.write_strings("type", "bnode");
+  _json.write_strings("value", string);
+  _json.finish_object();
 }
 
 void
 implementation::write_plain_literal(const char* const string,
                                     const char* const language) {
-  begin_map();
-  write_pair("type", "literal");
-  write_pair("value", string);
+  _json.begin_object();
+  _json.write_strings("type", "literal");
+  _json.write_strings("value", string);
   if (language != nullptr) {
-    write_pair("xml:lang", language);
+    _json.write_strings("xml:lang", language);
   }
-  finish_map();
+  _json.finish_object();
 }
 
 void
 implementation::write_typed_literal(const char* const string,
                                     const char* const datatype) {
-  begin_map();
-  write_pair("type", "literal"); // TODO: support also for SPARQL 1.0's "typed-literal"
-  write_pair("value", string);
-  write_pair("datatype", datatype);
-  finish_map();
+  _json.begin_object();
+  _json.write_strings("type", "literal"); // TODO: support also for SPARQL 1.0's "typed-literal"
+  _json.write_strings("value", string);
+  _json.write_strings("datatype", datatype);
+  _json.finish_object();
 }
 
 void
 implementation::flush() {
-  fflush(_stream);
+  _json.flush();
 }
