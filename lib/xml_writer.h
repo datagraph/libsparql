@@ -89,12 +89,18 @@ namespace {
       }
     }
 
-    void finish_element() {
-      /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterEndElement */
-      //xmlTextWriterEndElement(_writer);
-      /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterFullEndElement */
-      if (xmlTextWriterFullEndElement(_writer) == -1) {
-        throw_error();
+    void finish_element(const bool full = false) {
+      if (full) {
+        /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterFullEndElement */
+        if (xmlTextWriterFullEndElement(_writer) == -1) {
+          throw_error();
+        }
+      }
+      else {
+        /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterEndElement */
+        if (xmlTextWriterEndElement(_writer) == -1) {
+          throw_error();
+        }
       }
     }
 
