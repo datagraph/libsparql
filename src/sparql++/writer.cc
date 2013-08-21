@@ -228,9 +228,47 @@ writer::finish_result() {
 }
 
 void
-writer::write_binding(const char* const name, ...) { // FIXME
+writer::begin_binding(const char* const name) {
   assert(_implementation != nullptr);
-  (void)name; // TODO
+  _implementation->begin_binding(name);
+}
+
+void
+writer::finish_binding() {
+  assert(_implementation != nullptr);
+  _implementation->finish_binding();
+}
+
+void
+writer::write_uri_reference(const char* const string) {
+  assert(_implementation != nullptr);
+  _implementation->write_uri_reference(string);
+}
+
+void
+writer::write_blank_node(const char* const string) {
+  assert(_implementation != nullptr);
+  _implementation->write_blank_node(string);
+}
+
+void
+writer::write_plain_literal(const char* const string,
+                            const char* const language) {
+  assert(_implementation != nullptr);
+  _implementation->write_plain_literal(string, language);
+}
+
+void
+writer::write_typed_literal(const char* const string,
+                            const char* const datatype) {
+  assert(_implementation != nullptr);
+  _implementation->write_typed_literal(string, datatype);
+}
+
+void
+writer::write_comment(const char* const comment) {
+  assert(_implementation != nullptr);
+  _implementation->write_comment(comment);
 }
 
 void

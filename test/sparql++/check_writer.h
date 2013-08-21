@@ -28,9 +28,17 @@ write_bindings(sparql::writer& writer) {
     {
       writer.begin_result();
       {
-        writer.write_binding("s"); // TODO
-        writer.write_binding("p"); // TODO
-        writer.write_binding("o"); // TODO
+        writer.begin_binding("s");
+        writer.write_blank_node("jhacker");
+        writer.finish_binding();
+
+        writer.begin_binding("p");
+        writer.write_uri_reference("http://xmlns.com/foaf/0.1/name");
+        writer.finish_binding();
+
+        writer.begin_binding("o");
+        writer.write_plain_literal("J. Random Hacker", "en");
+        writer.finish_binding();
       }
       writer.finish_result();
     }
