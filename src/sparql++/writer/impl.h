@@ -8,6 +8,9 @@
 #include <boost/noncopyable.hpp>
 
 struct sparql::writer::implementation : private boost::noncopyable {
+  std::size_t _variable_count = 0;
+  std::size_t _binding_count = 0;
+
 protected:
   implementation() noexcept {}
 
