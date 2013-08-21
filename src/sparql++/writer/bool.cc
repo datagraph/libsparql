@@ -7,6 +7,7 @@
 #include "sparql++/writer/bool.h"
 
 #include <cassert> /* for assert() */
+#include <cstdio>  /* for std::fflush(), std::fputs() */
 
 namespace {
   struct implementation : public sparql::writer::implementation {
@@ -36,10 +37,10 @@ implementation::~implementation() noexcept {}
 
 void
 implementation::write_boolean(const bool value) {
-  fwrite(value ? "true\n" : "false\n", 1, value ? 5 : 6, _stream);
+  std::fputs(value ? "true\n" : "false\n", _stream);
 }
 
 void
 implementation::flush() {
-  fflush(_stream);
+  std::fflush(_stream);
 }
