@@ -16,11 +16,7 @@ write_bindings(sparql::writer& writer) {
   {
     writer.begin_head();
     {
-      writer.begin_variables();
-      {
-        writer.write_variables({"s", "p", "o"});
-      }
-      writer.finish_variables();
+      writer.write_variables({"s", "p", "o"});
     }
     writer.finish_head();
 
