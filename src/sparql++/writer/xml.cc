@@ -6,10 +6,10 @@
 
 #include "sparql++/writer/xml.h"
 
+#include "xml_writer.h"
+
 #include <cassert>   /* for assert() */
 #include <stdexcept> /* for std::runtime_error */
-
-#include <libxml/xmlwriter.h>
 
 namespace {
   struct implementation : public sparql::writer::implementation {
@@ -34,69 +34,10 @@ namespace {
     virtual void write_blank_node(const char* string) override;
     virtual void write_plain_literal(const char* string, const char* language) override;
     virtual void write_typed_literal(const char* string, const char* datatype) override;
-
-    virtual void flush() override {
-      /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterFlush */
-      xmlTextWriterFlush(_writer);
-    }
-
-  protected:
-    inline void begin_document() {
-      /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterStartDocument */
-      xmlTextWriterStartDocument(_writer, "1.0", "UTF-8", nullptr);
-    }
-
-    inline void finish_document() {
-      /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterEndDocument */
-      xmlTextWriterEndDocument(_writer);
-    }
-
-    inline void write_element(const char* name, const char* text) {
-      /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterWriteElement */
-      xmlTextWriterWriteElement(_writer,
-        reinterpret_cast<const xmlChar*>(name),
-        reinterpret_cast<const xmlChar*>(text));
-    }
-
-    inline void begin_element(const char* name) {
-      /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterStartElement */
-      xmlTextWriterStartElement(_writer,
-        reinterpret_cast<const xmlChar*>(name));
-    }
-
-    inline void begin_element_with_ns(const char* name, const char* ns) {
-      /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterStartElementNS */
-      xmlTextWriterStartElementNS(_writer, nullptr,
-        reinterpret_cast<const xmlChar*>(name),
-        reinterpret_cast<const xmlChar*>(ns));
-    }
-
-    inline void finish_element(const bool full = false) {
-      if (full) {
-        /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterFullEndElement */
-        xmlTextWriterFullEndElement(_writer);
-      }
-      else {
-        /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterEndElement */
-        xmlTextWriterEndElement(_writer);
-      }
-    }
-
-    inline void write_attribute(const char* name, const char* value) {
-      /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterWriteAttribute */
-      xmlTextWriterWriteAttribute(_writer,
-        reinterpret_cast<const xmlChar*>(name),
-        reinterpret_cast<const xmlChar*>(value));
-    }
-
-    void write_text(const char* text) {
-      /* @see http://www.xmlsoft.org/html/libxml-xmlwriter.html#xmlTextWriterWriteString */
-      xmlTextWriterWriteString(_writer,
-        reinterpret_cast<const xmlChar*>(text));
-    }
+    virtual void flush() override { _xml.flush(); }
 
   private:
-    xmlTextWriterPtr _writer = nullptr;
+    xml_writer _xml;
   };
 }
 
@@ -104,59 +45,43 @@ sparql::writer::implementation*
 sparql_writer_for_xml(FILE* const stream,
                       const char* const content_type,
                       const char* const charset) {
-  (void)content_type, (void)charset;
+  (void)content_type, (void)charset; /* unused */
   return new implementation(stream);
 }
 
-implementation::implementation(FILE* const stream) {
+implementation::implementation(FILE* const stream)
+  : _xml(stream) {
   assert(stream != nullptr);
-
-  xmlOutputBufferPtr output = xmlOutputBufferCreateFile(stream, nullptr);
-  if (output == nullptr) {
-    throw std::runtime_error("xmlOutputBufferCreateFile() failed"); // TODO
-  }
-
-  _writer = xmlNewTextWriter(output);
-  if (_writer == nullptr) {
-    (void)xmlOutputBufferClose(output);
-    throw std::runtime_error("xmlNewTextWriter() failed"); // TODO
-  }
 }
 
-implementation::~implementation() noexcept {
-  if (_writer != nullptr) {
-    xmlFreeTextWriter(_writer);
-    _writer = nullptr;
-  }
-}
+implementation::~implementation() noexcept {}
 
 void
 implementation::begin() {
-  xmlTextWriterSetIndent(_writer, 1);
-  xmlTextWriterSetIndentString(_writer, reinterpret_cast<const xmlChar*>("  ")); /* two spaces */
+  _xml.set_indent(2);
 
   /* <?xml version="1.0" encoding="UTF-8"?> */
-  begin_document();
+  _xml.begin_document();
 
   /* <sparql xmlns="http://www.w3.org/2005/sparql-results#"> */
-  begin_element_with_ns("sparql", "http://www.w3.org/2005/sparql-results#");
+  _xml.begin_element_with_ns("sparql", "http://www.w3.org/2005/sparql-results#");
 }
 
 void
 implementation::finish() {
-  finish_element(true); /* </sparql> */
+  _xml.finish_element(true); /* </sparql> */
 
-  finish_document(); /* EOF */
+  _xml.finish_document(); /* EOF */
 }
 
 void
 implementation::begin_head() {
-  begin_element("head");
+  _xml.begin_element("head");
 }
 
 void
 implementation::finish_head() {
-  finish_element(); /* </head> */
+  _xml.finish_element(); /* </head> */
 }
 
 void
@@ -171,72 +96,84 @@ implementation::finish_variables() {
 
 void
 implementation::write_variable(const char* const name) {
-  begin_element("variable");
-  write_attribute("name", name);
-  finish_element();
+  _xml.begin_element("variable");
+  _xml.write_attribute("name", name);
+  _xml.finish_element();
 }
 
 void
 implementation::write_link(const char* const href) {
-  begin_element("link");
-  write_attribute("href", href);
-  finish_element();
+  _xml.begin_element("link");
+  _xml.write_attribute("href", href);
+  _xml.finish_element();
 }
 
 void
 implementation::write_boolean(const bool value) {
-  write_element("boolean", value ? "true" : "false");
+  _xml.write_element("boolean", value ? "true" : "false");
 }
 
 void
 implementation::begin_results() {
-  begin_element("results");
+  _xml.begin_element("results");
 }
 
 void
 implementation::finish_results() {
-  finish_element(true); /* </results> */
+  _xml.finish_element(true); /* </results> */
 }
 
 void
 implementation::begin_result() {
-  begin_element("result");
+  _xml.begin_element("result");
 }
 
 void
 implementation::finish_result() {
-  finish_element(true); /* </result> */
+  _xml.finish_element(true); /* </result> */
 }
 
 void
 implementation::begin_binding(const char* const name) {
-  begin_element("binding");
-  write_attribute("name", name);
+  _xml.begin_element("binding");
+  _xml.write_attribute("name", name);
 }
 
 void
 implementation::finish_binding() {
-  finish_element(true);
+  _xml.finish_element(true);
 }
 
 void
 implementation::write_uri_reference(const char* const string) {
-  (void)string; // TODO
+  _xml.begin_element("uri");
+  _xml.write_text(string);
+  _xml.finish_element(true);
 }
 
 void
 implementation::write_blank_node(const char* const string) {
-  (void)string; // TODO
+  _xml.begin_element("bnode");
+  _xml.write_text(string);
+  _xml.finish_element(true);
 }
 
 void
 implementation::write_plain_literal(const char* const string,
                                     const char* const language) {
-  (void)string, (void)language; // TODO
+  _xml.begin_element("literal");
+  if (language) {
+    _xml.write_attribute("xml:lang", language);
+  }
+  _xml.write_text(string);
+  _xml.finish_element(true);
 }
 
 void
 implementation::write_typed_literal(const char* const string,
                                     const char* const datatype) {
-  (void)string, (void)datatype; // TODO
+  _xml.begin_element("literal");
+  _xml.write_attribute("datatype", datatype);
+  _xml.write_text(string);
+  _xml.finish_element(true);
 }
