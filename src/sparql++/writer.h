@@ -158,6 +158,24 @@ public:
    */
   void finish_result();
 
+#ifdef RDFXX_TERM_H
+  /**
+   * ...
+   */
+  void write_binding(const std::string& name, const rdf::term& term) {
+    write_binding(name.c_str(), term);
+  }
+
+  /**
+   * ...
+   */
+  void write_binding(const char* name, const rdf::term& term) {
+    begin_binding(name);
+    write_term(term);
+    finish_binding();
+  }
+#endif /* RDFXX_TERM_H */
+
   /**
    * ...
    */
@@ -174,6 +192,59 @@ public:
    * ...
    */
   void finish_binding();
+
+#ifdef RDFXX_TERM_H
+  /**
+   * ...
+   */
+  void write_term(const rdf::term& term) {
+    switch (term.type) {
+      case rdf::term_type::uri_reference:
+        write_term(dynamic_cast<const rdf::uri_reference&>(term));
+        break;
+      case rdf::term_type::blank_node:
+        write_term(dynamic_cast<const rdf::blank_node&>(term));
+        break;
+      case rdf::term_type::plain_literal:
+        write_term(dynamic_cast<const rdf::plain_literal&>(term));
+        break;
+      case rdf::term_type::typed_literal:
+        write_term(dynamic_cast<const rdf::typed_literal&>(term));
+        break;
+      case rdf::term_type::none:
+      default:
+        break;
+    }
+  }
+
+  /**
+   * ...
+   */
+  void write_term(const rdf::uri_reference& term) {
+    write_uri_reference(term.string);
+  }
+
+  /**
+   * ...
+   */
+  void write_term(const rdf::blank_node& term) {
+    write_blank_node(term.string);
+  }
+
+  /**
+   * ...
+   */
+  void write_term(const rdf::plain_literal& term) {
+    write_plain_literal(term.string, term.language_tag);
+  }
+
+  /**
+   * ...
+   */
+  void write_term(const rdf::typed_literal& term) {
+    write_typed_literal(term.string, term.datatype_uri);
+  }
+#endif /* RDFXX_TERM_H */
 
   /**
    * ...
@@ -229,20 +300,6 @@ public:
    * ...
    */
   void write_typed_literal(const char* string, const char* datatype);
-
-#if 0
-  /**
-   * ...
-   */
-  void write_binding(const std::string& name, ...) { // FIXME
-    write_binding(name.c_str()); // TODO
-  }
-
-  /**
-   * ...
-   */
-  void write_binding(const char* name, ...); // FIXME
-#endif
 
   /**
    * ...
