@@ -1,0 +1,28 @@
+{
+  "head": {
+    "vars": [
+      "s",
+      "p",
+      "o"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "s": {
+          "type": "bnode",
+          "value": "jhacker"
+        },
+        "p": {
+          "type": "uri",
+          "value": "http:\/\/xmlns.com\/foaf\/0.1\/name"
+        },
+        "o": {
+          "type": "literal",
+          "value": "J. Random Hacker",
+          "xml:lang": "en"
+        }
+      }
+    ]
+  }
+}

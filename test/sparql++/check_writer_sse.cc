@@ -5,7 +5,13 @@
 
 #include <sparql++/writer.h> /* for sparql::writer */
 
+#include "check_writer.h"
+
+static sparql::writer
+make_writer(FILE* stream = stdout) {
+  return sparql::writer(stream, "application/sparql-results+sse", "UTF-8");
+}
+
 BOOST_AUTO_TEST_CASE(test_ctor) {
-  sparql::writer writer(stdout, "application/sparql-results+sse", "UTF-8");
-  BOOST_CHECK(true); // TODO
+  BOOST_CHECK_NO_THROW(make_writer());
 }

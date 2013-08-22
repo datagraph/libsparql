@@ -8,24 +8,18 @@
 #include "check_writer.h"
 
 static sparql::writer
-make_writer() {
-  return sparql::writer(stdout, "text/csv", "UTF-8");
+make_writer(FILE* stream = stdout) {
+  return sparql::writer(stream, "text/csv", "UTF-8");
 }
 
 BOOST_AUTO_TEST_CASE(test_ctor) {
-  make_writer();
+  BOOST_CHECK_NO_THROW(make_writer());
 }
-
-#if 0
-BOOST_AUTO_TEST_CASE(test_boolean) {
-  auto writer = make_writer();
-  write_boolean(writer);
-  // TODO
-}
-#endif
 
 BOOST_AUTO_TEST_CASE(test_bindings) {
-  auto writer = make_writer();
-  write_bindings(writer);
-  // TODO
+  const auto output = with_captured_output([](FILE* output) {
+    auto writer = make_writer(output);
+    write_bindings(writer);
+  });
+  BOOST_CHECK_EQUAL(output, read_file("fixtures/bindings.csv"));
 }
