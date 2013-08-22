@@ -44,16 +44,22 @@ static const unsigned int sparql_format_count =
 
 bool
 format::supported(const char* const content_type) {
-  if (content_type != nullptr) {
-    for (unsigned int i = 0; i < sparql_format_count; i++) {
-      const format* const format_info = &sparql_format_info[i];
-      assert(format_info->content_type != nullptr);
+  return (content_type != nullptr) ?
+    find_by_content_type(content_type) != nullptr : false;
+}
 
-      if (std::strcmp(content_type, format_info->content_type) == 0) {
-        return true; /* found */
-      }
+const format*
+format::find_by_content_type(const char* const content_type) {
+  assert(content_type != nullptr);
+
+  for (unsigned int i = 0; i < sparql_format_count; i++) {
+    const format* const format_info = &sparql_format_info[i];
+    assert(format_info->content_type != nullptr);
+
+    if (std::strcmp(content_type, format_info->content_type) == 0) {
+      return format_info; /* found */
     }
   }
 
-  return false; /* not found */
+  return nullptr; /* not found */
 }

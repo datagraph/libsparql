@@ -17,6 +17,12 @@ namespace sparql {
     }
 
     static bool supported(const char* content_type);
+
+    static const format* find_by_content_type(const std::string& content_type) {
+      return find_by_content_type(content_type.c_str());
+    }
+
+    static const format* find_by_content_type(const char* content_type);
   };
 }
 
