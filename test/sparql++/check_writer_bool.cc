@@ -21,5 +21,5 @@ BOOST_AUTO_TEST_CASE(test_boolean) {
     auto writer = make_writer(output);
     write_boolean(writer);
   });
-  BOOST_CHECK_EQUAL(output, read_file("fixtures/boolean.bool"));
+  BOOST_CHECK_EQUAL(output, read_file("fixtures/boolean.txt"));
 }
