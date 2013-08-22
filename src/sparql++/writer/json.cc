@@ -145,40 +145,32 @@ implementation::finish_binding() {
 
 void
 implementation::write_uri_reference(const char* const string) {
-  _json.begin_object();
   _json.write_strings("type", "uri");
   _json.write_strings("value", string);
-  _json.finish_object();
 }
 
 void
 implementation::write_blank_node(const char* const string) {
-  _json.begin_object();
   _json.write_strings("type", "bnode");
   _json.write_strings("value", string);
-  _json.finish_object();
 }
 
 void
 implementation::write_plain_literal(const char* const string,
                                     const char* const language) {
-  _json.begin_object();
   _json.write_strings("type", "literal");
   _json.write_strings("value", string);
   if (language != nullptr) {
     _json.write_strings("xml:lang", language);
   }
-  _json.finish_object();
 }
 
 void
 implementation::write_typed_literal(const char* const string,
                                     const char* const datatype) {
-  _json.begin_object();
   _json.write_strings("type", "literal"); // TODO: support also for SPARQL 1.0's "typed-literal"
   _json.write_strings("value", string);
   _json.write_strings("datatype", datatype);
-  _json.finish_object();
 }
 
 void
