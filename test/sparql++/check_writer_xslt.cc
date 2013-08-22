@@ -9,7 +9,7 @@
 
 static sparql::writer
 make_writer(FILE* stream = stdout) {
-  return sparql::writer(stream, "application/xslt+xml", "UTF-8");
+  return sparql::writer(stream, "application/xml", "UTF-8");
 }
 
 BOOST_AUTO_TEST_CASE(test_ctor) {

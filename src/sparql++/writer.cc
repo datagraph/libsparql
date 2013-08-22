@@ -39,66 +39,75 @@
 #include "sparql++/writer/xslt.h"
 #endif
 
+#include "sparql++/format.h"
+
 #include <cassert>   /* for assert() */
+#include <cstdlib>   /* for std::abort() */
+#include <cstring>   /* for std::strcmp() */
 #include <stdexcept> /* for std::invalid_argument */
 
 using namespace sparql;
 
 static writer::implementation*
-sparql_writer_for(FILE* stream,
-                  const std::string& content_type,
-                  const std::string& charset) {
-  (void)stream, (void)content_type, (void)charset;
+sparql_writer_for(FILE* const stream,
+                  const char* const content_type,
+                  const char* const charset) {
+  const format* const format = format::find_by_content_type(content_type);
+  if (format == nullptr) {
+    return nullptr; /* unknown content type */
+  }
+  assert(format->module_name != nullptr);
 
 #ifndef DISABLE_BOOL
-  if (content_type.compare("text/boolean") == 0) {
-    return sparql_writer_for_bool(stream, content_type.c_str(), charset.c_str());
+  if (std::strcmp("bool", format->module_name) == 0) {
+    return sparql_writer_for_bool(stream, content_type, charset);
   }
 #endif
 
 #ifndef DISABLE_BRTR
-  if (content_type.compare("application/x-binary-rdf-results-table") == 0) {
-    return sparql_writer_for_brtr(stream, content_type.c_str(), charset.c_str());
+  if (std::strcmp("brtr", format->module_name) == 0) {
+    return sparql_writer_for_brtr(stream, content_type, charset);
   }
 #endif
 
 #ifndef DISABLE_CSV
-  if (content_type.compare("text/csv") == 0) {
-    return sparql_writer_for_csv(stream, content_type.c_str(), charset.c_str());
+  if (std::strcmp("csv", format->module_name) == 0) {
+    return sparql_writer_for_csv(stream, content_type, charset);
   }
 #endif
 
 #ifndef DISABLE_JSON
-  if (content_type.compare("application/sparql-results+json") == 0) {
-    return sparql_writer_for_json(stream, content_type.c_str(), charset.c_str());
+  if (std::strcmp("json", format->module_name) == 0) {
+    return sparql_writer_for_json(stream, content_type, charset);
   }
 #endif
 
 #ifndef DISABLE_SSE
-  if (content_type.compare("application/sparql-results+sse") == 0) {
-    return sparql_writer_for_sse(stream, content_type.c_str(), charset.c_str());
+  if (std::strcmp("sse", format->module_name) == 0) {
+    return sparql_writer_for_sse(stream, content_type, charset);
   }
 #endif
 
 #ifndef DISABLE_TSV
-  if (content_type.compare("text/tab-separated-values") == 0) {
-    return sparql_writer_for_tsv(stream, content_type.c_str(), charset.c_str());
+  if (std::strcmp("tsv", format->module_name) == 0) {
+    return sparql_writer_for_tsv(stream, content_type, charset);
   }
 #endif
 
 #ifndef DISABLE_XML
-  if (content_type.compare("application/sparql-results+xml") == 0) {
-    return sparql_writer_for_xml(stream, content_type.c_str(), charset.c_str());
+  if (std::strcmp("xml", format->module_name) == 0) {
+    return sparql_writer_for_xml(stream, content_type, charset);
   }
 #endif
 
 #ifndef DISABLE_XSLT
-  if (content_type.compare("application/xslt+xml") == 0) {
-    return sparql_writer_for_xslt(stream, content_type.c_str(), charset.c_str());
+  if (std::strcmp("xslt", format->module_name) == 0) {
+    return sparql_writer_for_xslt(stream, content_type, charset);
   }
 #endif
 
-  return nullptr;
+  (void)stream, (void)charset;
+  return std::abort(), nullptr; /* never reached */
 }
 
 writer::writer(const std::string& file_path,
@@ -116,7 +125,7 @@ writer::writer(std::ostream& stream,
 writer::writer(FILE* const stream,
                const std::string& content_type,
                const std::string& charset)
-  : _implementation(sparql_writer_for(stream, content_type, charset)) {
+  : _implementation(sparql_writer_for(stream, content_type.c_str(), charset.c_str())) {
   if (!_implementation) {
     throw std::invalid_argument("unknown content type: " + content_type);
   }
