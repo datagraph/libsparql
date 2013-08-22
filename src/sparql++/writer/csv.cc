@@ -27,6 +27,7 @@ namespace {
     //virtual void finish_results() override;
     //virtual void begin_result() override;
     virtual void finish_result() override;
+    virtual void omit_binding(const char* name) override;
     virtual void begin_binding(const char* name) override;
     virtual void finish_binding() override;
     virtual void write_uri_reference(const char* string) override;
@@ -83,6 +84,11 @@ implementation::write_boolean(const bool value) {
 void
 implementation::finish_result() {
   finish_record();
+}
+
+void
+implementation::omit_binding(const char* const name) {
+  begin_binding(name);
 }
 
 void

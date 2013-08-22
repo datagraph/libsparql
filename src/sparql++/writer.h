@@ -179,6 +179,18 @@ public:
   /**
    * ...
    */
+  void omit_binding(const std::string& name) {
+    omit_binding(name.c_str());
+  }
+
+  /**
+   * ...
+   */
+  void omit_binding(const char* name);
+
+  /**
+   * ...
+   */
   void begin_binding(const std::string& name) {
     begin_binding(name.c_str());
   }

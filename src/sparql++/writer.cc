@@ -228,6 +228,12 @@ writer::finish_result() {
 }
 
 void
+writer::omit_binding(const char* const name) {
+  assert(_implementation != nullptr);
+  _implementation->omit_binding(name);
+}
+
+void
 writer::begin_binding(const char* const name) {
   assert(_implementation != nullptr);
   _implementation->begin_binding(name);

@@ -43,6 +43,8 @@ public:
 
   virtual void finish_result() {}
 
+  virtual void omit_binding(const char* name) { (void)name; }
+
   virtual void begin_binding(const char* name) { (void)name; }
 
   virtual void finish_binding() {}

@@ -30,6 +30,7 @@ namespace {
     virtual void finish_results() override;
     virtual void begin_result() override;
     virtual void finish_result() override;
+    //virtual void omit_binding(const char* name) override;
     virtual void begin_binding(const char* name) override;
     virtual void finish_binding() override;
     virtual void write_uri_reference(const char* string) override;
