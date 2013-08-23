@@ -13,6 +13,7 @@
 
 namespace {
   struct implementation : public sparql::writer::implementation {
+    using super = sparql::writer::implementation;
     implementation(FILE* stream);
     virtual ~implementation() noexcept override;
     //virtual void begin() override;

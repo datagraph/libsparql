@@ -15,6 +15,7 @@ using namespace rfc4627;
 
 namespace {
   struct implementation : public sparql::writer::implementation {
+    using super = sparql::writer::implementation;
     implementation(FILE* stream);
     virtual ~implementation() noexcept override;
     virtual void begin() override;
@@ -125,6 +126,7 @@ implementation::finish_results() {
 
 void
 implementation::begin_result() {
+  super::begin_result();
   _json.begin_object();
 }
 

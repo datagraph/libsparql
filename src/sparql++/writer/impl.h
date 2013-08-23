@@ -39,7 +39,9 @@ public:
 
   virtual void finish_results() {}
 
-  virtual void begin_result() {}
+  virtual void begin_result() {
+    _binding_count = 0;
+  }
 
   virtual void finish_result() {}
 
