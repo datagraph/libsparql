@@ -134,7 +134,7 @@ AC_CHECK_FUNCS_ONCE([open_memstream])
 dnl Check for system services:
 
 dnl Generate output:
-AC_CONFIG_FILES([Makefile lib/Makefile src/Makefile src/sparql++/Makefile test/Makefile test/sparql++/Makefile])
+AC_CONFIG_FILES([Makefile lib/Makefile src/Makefile src/sparql++/Makefile test/Makefile])
 AC_SUBST([PACKAGE_VERSION_MAJOR], ["VERSION_MAJOR"])
 AC_SUBST([PACKAGE_VERSION_MINOR], ["VERSION_MINOR"])
 AC_SUBST([PACKAGE_VERSION_PATCH], ["VERSION_PATCH"])
