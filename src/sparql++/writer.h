@@ -336,7 +336,7 @@ public:
   struct implementation;
 
 private:
-  std::unique_ptr<implementation> _implementation = {nullptr};
+  std::unique_ptr<implementation> _implementation;
 };
 
 #endif /* SPARQLXX_WRITER_H */
