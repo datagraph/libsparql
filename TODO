@@ -1,1 +1,5 @@
 - Add a sparql::writer#write_links(...) method.
+- Remove the spurious dependency on Boost.Utility:
+  - .travis.yml
+  - README.rst
+  - src/sparql++/writer/impl.h
