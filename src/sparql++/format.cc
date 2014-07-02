@@ -13,28 +13,29 @@ using namespace sparql;
 
 static const format sparql_format_info[] = {
 #ifndef DISABLE_BOOL
-  {"text/boolean",                           nullptr, "txt", "bool"},
+  {"text/boolean",                           nullptr, "txt",  "bool"},
 #endif
 #ifndef DISABLE_BRTR
-  {"application/x-binary-rdf-results-table", nullptr, "brt", "brtr"},
+  {"application/x-binary-rdf-results-table", nullptr, "brt",  "brtr"},
 #endif
 #ifndef DISABLE_CSV
-  {"text/csv",                               nullptr, "csv", "csv"},
+  {"text/csv",                               nullptr, "csv",  "csv"},
 #endif
 #ifndef DISABLE_JSON
-  {"application/sparql-results+json",        nullptr, "srj", "json"},
+  {"application/sparql-results+json",        nullptr, "srj",  "json"},
+  {"application/json",                       nullptr, "json", "json"},
 #endif
 #ifndef DISABLE_SSE
-  {"application/sparql-results+sse",         nullptr, "sse", "sse"},
+  {"application/sparql-results+sse",         nullptr, "sse",  "sse"},
 #endif
 #ifndef DISABLE_TSV
-  {"text/tab-separated-values",              nullptr, "tsv", "tsv"},
+  {"text/tab-separated-values",              nullptr, "tsv",  "tsv"},
 #endif
 #ifndef DISABLE_XML
-  {"application/sparql-results+xml",         nullptr, "srx", "xml"},
+  {"application/sparql-results+xml",         nullptr, "srx",  "xml"},
 #endif
 #ifndef DISABLE_XSLT
-  {"application/xml",                        nullptr, "xml", "xslt"},
+  {"application/xml",                        nullptr, "xml",  "xslt"},
 #endif
   {nullptr, nullptr, nullptr, nullptr},
 };
