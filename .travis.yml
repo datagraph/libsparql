@@ -1,3 +1,4 @@
+# https://travis-ci.org/datagraph/libsparql
 language: cpp
 compiler:
   - clang
@@ -12,7 +13,21 @@ before_install:
 before_script:
   - ./autogen.sh
 script:
-  - ./configure && make && make check
+  - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then ./configure && make && make check; fi
 branches:
   only:
     - master
+    - coverity
+
+# https://scan.coverity.com/projects/3234
+env:
+  global:
+  - secure: "QGEbHq9LRcYzNGgDfWy/x1FkAM1iE4dZWLHBm9QSPLVhGmrILN66N6bmEaVzgmsBVs5fPxOL9IfiKOjyGQ8JjQ1VUm66p6a3no4l/JHgRram6KuBwX9Mbs3MokJXvepdoQC/1TE7xGEY6SOZNAJ/IB6Qv02MR72IGCVWLJ1nfQA="
+addons:
+  coverity_scan:
+    project:
+      name: datagraph/libsparql
+    notification_email: arto@bendiken.net
+    build_command_prepend: cov-configure --comptype gcc --compiler $CC && ./configure
+    build_command: make
+    branch_pattern: coverity
