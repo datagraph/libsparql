@@ -2,7 +2,7 @@
 libsparql++
 ***********
 
-.. image:: https://travis-ci.org/datagraph/libsparql.png?branch=master
+.. image:: https://api.travis-ci.org/datagraph/libsparql.svg?branch=master
    :target: https://travis-ci.org/datagraph/libsparql
    :alt: Travis CI build status
 
