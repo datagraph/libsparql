@@ -32,12 +32,10 @@ Build Dependencies
 * libyajl_ (>= 2.0) or (>= 1.0), for the SPARQL JSON writer only
 * libxml2_ (>= 2.7.8), for the SPARQL XML writer only
 * XQilla_ (>= 2.3), for the XSLT pipeline only
-* Boost.Utility_ (>= 1.48)
 
-.. _libyajl:       http://lloyd.github.io/yajl/
-.. _libxml2:       http://www.xmlsoft.org/
-.. _XQilla:        http://xqilla.sourceforge.net/
-.. _Boost.Utility: http://www.boost.org/libs/utility/
+.. _libyajl: http://lloyd.github.io/yajl/
+.. _libxml2: http://www.xmlsoft.org/
+.. _XQilla:  http://xqilla.sourceforge.net/
 
 Installation on Unix
 ====================

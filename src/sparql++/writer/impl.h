@@ -5,17 +5,41 @@
 
 #include "sparql++/writer.h"
 
-#include <boost/noncopyable.hpp>
-
-struct sparql::writer::implementation : private boost::noncopyable {
+struct sparql::writer::implementation {
   std::size_t _variable_count = 0;
   std::size_t _binding_count = 0;
 
 protected:
-  implementation() noexcept {}
+  /**
+   * Default constructor.
+   */
+  implementation() noexcept = default;
 
 public:
-  virtual ~implementation() noexcept {}
+  /**
+   * Copy constructor.
+   */
+  implementation(const implementation& other) noexcept = delete;
+
+  /**
+   * Move constructor.
+   */
+  implementation(implementation&& other) noexcept = default;
+
+  /**
+   * Destructor.
+   */
+  virtual ~implementation() noexcept = default;
+
+  /**
+   * Copy assignment operator.
+   */
+  implementation& operator=(const implementation& other) noexcept = delete;
+
+  /**
+   * Move assignment operator.
+   */
+  implementation& operator=(implementation&& other) noexcept = default;
 
   virtual void begin() {}
 
