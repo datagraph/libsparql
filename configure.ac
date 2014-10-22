@@ -88,21 +88,27 @@ dnl Check for libraries:
 # libyajl (libyajl-dev on Ubuntu, yajl on Mac OS X + MacPorts)
 AS_IF([test "x$enable_json" != "xno"], [
   AC_CHECK_HEADERS([yajl/yajl_gen.h],
-    AC_SEARCH_LIBS([yajl_gen_alloc], [yajl yajl_s], [],
+    AC_SEARCH_LIBS([yajl_gen_alloc], [yajl yajl_s],
+      [AC_DEFINE([HAVE_LIBYAJL], [1], [Define to 1 if you have the libyajl shared library.])],
       AC_MSG_ERROR([*** Shared library libyajl not found; install http://lloyd.github.io/yajl/ ***])),
     AC_MSG_ERROR([*** Header file <yajl/yajl_gen.h> not found; install http://lloyd.github.io/yajl/ ***]))
 ])
+AM_CONDITIONAL([HAVE_LIBYAJL], [test "x$enable_json" != "xno" && test "x$ac_res" != "xno"])
 # libxml2 (libxml2-dev on Ubuntu, libxml2 on Mac OS X + MacPorts)
 AS_IF([test "x$enable_xml" != "xno"], [
-  PKG_CHECK_MODULES([libxml2], [libxml-2.0 >= 2.7.8])
+  PKG_CHECK_MODULES([libxml2], [libxml-2.0 >= 2.7.8],
+    [AC_DEFINE([HAVE_LIBXML2], [1], [Define to 1 if you have the libxml2 shared library.])])
 ])
+AM_CONDITIONAL([HAVE_LIBXML2], [test "x$libxml2_LIBS" != "x"])
 # libxqilla (libxqilla-dev on Ubuntu, xqilla on Mac OS X + MacPorts)
 AS_IF([test "x$enable_xslt" != "xno"], [
   AC_CHECK_HEADERS([xqilla/xqilla-simple.hpp],
-    AC_SEARCH_LIBS([createXQillaXQCImplementation], [xqilla], [],
+    AC_SEARCH_LIBS([createXQillaXQCImplementation], [xqilla],
+      [AC_DEFINE([HAVE_LIBXQILLA], [1], [Define to 1 if you have the libxqilla shared library.])],
       AC_MSG_ERROR([*** Shared library libxqilla not found; install http://xqilla.sourceforge.net/ ***])),
     AC_MSG_ERROR([*** Header file <xqilla/xqilla-simple.hpp> not found; install http://xqilla.sourceforge.net/ ***]))
 ])
+AM_CONDITIONAL([HAVE_LIBXQILLA], [test "x$enable_xslt" != "xno" && test "x$ac_res" != "xno"])
 
 dnl Check for header files:
 
