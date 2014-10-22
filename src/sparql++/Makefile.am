@@ -45,11 +45,20 @@ if !DISABLE_TSV
 endif
 
 if !DISABLE_XML
-  AM_CPPFLAGS += $(libxml2_CFLAGS)
-  libsparql___la_LIBADD += $(libxml2_LIBS)
   libsparql___la_SOURCES += writer/xml.cc
 endif
 
 if !DISABLE_XSLT
   libsparql___la_SOURCES += writer/xslt.cc
+endif
+
+if HAVE_LIBYAJL
+endif
+
+if HAVE_LIBXML2
+  AM_CPPFLAGS += $(libxml2_CFLAGS)
+  libsparql___la_LIBADD += $(libxml2_LIBS)
+endif
+
+if HAVE_LIBXQILLA
 endif

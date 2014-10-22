@@ -1,1 +1,2 @@
 - Add a sparql::writer#write_links(...) method.
+- Eliminate the libyajl dependency in favor of librfc.
